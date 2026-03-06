@@ -1,0 +1,30 @@
+# Ignore Visual Studio temporary files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+
+# Rider IDE files (optional)
+.idea/
+
+# NuGet packages
+*.nupkg
+packages/
+*.snupkg
+
+# Node modules (if any frontend)
+node_modules/
+
+# Others
+*.log
+*.tlog
+*.tmp
