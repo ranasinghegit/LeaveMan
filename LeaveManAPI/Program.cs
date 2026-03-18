@@ -48,7 +48,18 @@ builder.Services.AddAuthentication(options =>
 
 
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReact",
+        policy => policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowReact");
 
 // Configure the HTTP request pipeline.
 
