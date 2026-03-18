@@ -6,6 +6,7 @@ using System.Text;
 using LeaveManAPI.Data;
 using LeaveManAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using LeaveManAPI.DTOs;
 
 namespace LeaveManAPI.Controllers
 {
@@ -22,14 +23,18 @@ namespace LeaveManAPI.Controllers
             _configuration = configuration;
         }
 
+
         [HttpPost("login")]
-        public async Task<IActionResult> Login(User loginUser)
+        public IActionResult Login(LoginRequest request)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(x => x.Username == loginUser.Username && x.PasswordHash == loginUser.PasswordHash);
+            var user = _context.Users.FirstOrDefault(u =>
+                u.Username == request.Username &&
+                u.PasswordHash == request.PasswordHash);
 
             if (user == null)
-                return Unauthorized("Invalid credentials");
+            {
+                return Unauthorized("Invalid username or password");
+            }
 
             var token = GenerateToken(user);
 
@@ -46,6 +51,7 @@ namespace LeaveManAPI.Controllers
 
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Role)
             };
